@@ -2,8 +2,12 @@ const https = require('https')
 const querystring = require('querystring')
 const api = require('./api')
 
-// Print out temp details
-// Print out error message
+function printWeather(weather) {
+  const message = `Current temperature in ${weather.name} is ${
+    weather.main.temp
+  }°C`
+  console.log(message)
+}
 
 function get(query) {
   const parameters = {
@@ -24,14 +28,12 @@ function get(query) {
 
   const request = https.get(url, response => {
     let body = ''
-    // Read the data
     response.on('data', chunk => {
       body += chunk
     })
     response.on('end', () => {
-      console.log(body)
-      //Parse data
-      //Print the data
+      const weather = JSON.parse(body)
+      printWeather(weather)
     })
   })
 }
